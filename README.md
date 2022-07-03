@@ -1,5 +1,9 @@
 # compton-scattering
+## Need to do
 
-# Plan  - Structure of the Code
+[] Fix Kinematics of final state particles
+[] Fix units and conversions for cross section
+
+### Plan  - Structure of the Code
 
 
