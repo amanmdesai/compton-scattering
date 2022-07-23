@@ -3,6 +3,8 @@ generate a  e- >  a e-
 output compton
 launch
 set lpp1 0
-#set lpp2 0
+set lpp2 0
 set ebeam1  .0005
 set ebeam2  .05
+
+# DOES NOT WORK
