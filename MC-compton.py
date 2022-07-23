@@ -9,17 +9,18 @@ import matplotlib.pyplot as plt
 pi = math.pi
 m = 0.000510 # mass of electron in gev  
 alpha = 1/132.507 # alpha
-E = .1 # initial photon energy in MeV
+E = 1.17 # initial photon energy in MeV
 E = E*1E-3 # initial photon energy in Gev 
 delta = 2.0
-w = E #(E - m**2)/(2*m)
-w = w/m
+w = E/m #(E - m**2)/(2*m)
 convert = 3.894E8 # GeV^-2 to pb
 
 def dsigma(costh):
-    pre_fact = pi*(alpha/m)**2
+    pre_fact = 1
+    sum_1 = 0
+    pre_fact *= pi*(alpha/m)**2
     pre_fact *= 1/(1 +  w*(1-costh))**2
-    sum_1 = 1/(1 + w*(1-costh))
+    sum_1 += 1/(1 + w*(1-costh))
     sum_1 += w*(1-costh)
     sum_1 += costh**2
     return pre_fact*sum_1
@@ -38,7 +39,7 @@ def plot_photon(var,var_name):
     plt.xlabel(string)
     plt.ylabel("Counts")
     string_new = string.replace(" ","_")
-    plt.savefig(string_new+".png")
+    plt.savefig("plots-mc/"+string_new+".pdf")
 
 
 def plot_elec(var,var_name):
@@ -48,14 +49,14 @@ def plot_elec(var,var_name):
     plt.xlabel(string)
     plt.ylabel("Counts")
     string_new = string.replace(" ","_")
-    plt.savefig(string_new+".png")
+    plt.savefig("plots-mc/"+string_new+".pdf")
 
 def plot_2d(var_1,var_2,var_1_name,var_2_name):
     plt.figure()
     plt.scatter(var_1,var_2*1E6)
     plt.xlabel(var_1_name)
-    plt.ylabel(var_2_name)
-    plt.savefig(var_1_name+"_"+var_2_name.replace(" ","_")+".png")
+    plt.ylabel(var_2_name + " keV")
+    plt.savefig("plots-mc/"+var_1_name+"_"+var_2_name.replace(" ","_")+".pdf")
 
 def gen_events(Nevent,w_max):
     i = 0
@@ -85,11 +86,10 @@ def gen_events(Nevent,w_max):
             ph_py[i] = ph_e[i] * sinth 
             ph_pz[i] = ph_e[i] * costh 
 
-
+            el_e[i]  = E + m  - ph_e[i] # math.sqrt(m**2 + el_px[i]**2 + el_py[i]**2 + el_pz[i]**2)
             el_px[i] = - ph_px[i] 
             el_py[i] = - ph_py[i] 
             el_pz[i] = E - (ph_e[i] * costh) #math.sqrt(el_e[i]**2 - m**2  - el_px[i]**2)
-            el_e[i]  = E - ph_e[i] # math.sqrt(m**2 + el_px[i]**2 + el_py[i]**2 + el_pz[i]**2)
             i = i + 1
 
     plot_photon(ph_px,"Px")
@@ -132,11 +132,3 @@ def main():
 
 main()
 
-
-'''
-pre_fact = pi*alpha*alpha/(m**2)
-pre_fact *= (1+(E*(1-costh)/m))**2
-sum_1 = (1+(E*(1-costh)/m))
-sum_1 += E * (1-costh)/m
-sum_1 += costh**2
-'''
